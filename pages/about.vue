@@ -1,44 +1,54 @@
 <template>
   <div id="about-page" class="page-wrapper about-page content-page">
     <site-hero
-      title="About Us"
-      subtitle="Example About Page"
+      title="About Me"
+      subtitle="Sylvester Carolan"
       image="/uploads/about-hero.jpg"
     ></site-hero>
     <main-section theme="sidebar-right">
       <template v-slot:default>
         <div class="content">
-          <h3>Fake Heading</h3>
+          <quote-card />
+          <h3>Bio</h3>
           <p>
-            <strong>
-              Edit this page in<code>/pages/about.vue</code>to fit your needs.
-            </strong>
-          </p>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci
-            eligendi impedit inventore ipsa laboriosam libero magnam modi odio,
-            sunt temporibus. Distinctio doloremque eum magni nostrum quasi
-            ratione rem repudiandae sit!
+            Born and raised in London, I moved to the New York in 1993 where I
+            met my future wife Lia. We have an awesome, 8th grader, Jaiden, who
+            keeps me laughing and loving life. I call Raleigh, North Carolina
+            home.
           </p>
 
-          <h3>Another Fake Heading</h3>
+          <h3>Why this site?</h3>
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci
-            eligendi impedit inventore ipsa laboriosam libero magnam modi odio,
-            sunt temporibus. Distinctio doloremque eum magni nostrum quasi
-            ratione rem repudiandae sit!
+            I've been a software engineer all my life and wanted to have a place
+            where I could experiment with different technology and interests. I
+            didn’t really build the site for anyone accept me, so if by chance
+            you do find something interesting, or inspiring, let me know.
           </p>
-          <quote-card />
-          <h3>Still More Fake Content</h3>
+
+          <h3>What's on the site?</h3>
+          <strong>Technology</strong>
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci
-            eligendi impedit inventore ipsa laboriosam libero magnam modi odio,
-            sunt temporibus. Distinctio doloremque eum magni nostrum quasi
-            ratione rem repudiandae sit! Lorem ipsum dolor sit amet, consectetur
-            adipisicing elit.
-            <strong>Alias aut facere harum ipsam</strong> quibusdam quidem
-            quisquam saepe? Alias architecto blanditiis consequatur consequuntur
-            dicta ipsa iste modi provident, quod, similique veritatis.
+            Since high school, I have always been drawn to mathematics. I love
+            the way it describes the world in both its simplicity, and
+            complexity. Mathematics was the springboard for computer science for
+            me, from my very first ZX81. You’re bound to come across multiple
+            articles, references and links to all things technical. Creativity.
+            Building user interfaces led me to animation, design, UI and UX.
+            This led to a number of years studying, Motion graphics, Cinema 4D
+            and movie making. Eventually I would come full circle, back to
+            JavaScript and some of the 3D animation tools and libraries.
+          </p>
+
+          <strong>Work Experience</strong>
+          <p>
+            What are some of the experiences I’ve had during my time at work?
+            Building teams, being in difficult situations, planning,
+            communication, leading, learning.
+          </p>
+          <strong>Politics and Life</strong>
+          <p>
+            I often to ask myself, “How are you going to change the world
+            today?” More on this later.
           </p>
         </div>
 
@@ -46,10 +56,27 @@
           <div class="tile is-parent">
             <article class="tile is-child box">
               <p class="title">
-                Cool Stuff We Do
+                Technology
               </p>
               <p class="subtitle">
-                Sooo Cool
+                Science, Mathematics and Computing
+              </p>
+              <figure class="image is-1by1">
+                <opti-image
+                  src="/uploads/technology.jpg"
+                  width="500"
+                  height="500"
+                />
+              </figure>
+            </article>
+          </div>
+          <div class="tile is-parent">
+            <article class="tile is-child box">
+              <p class="title">
+                Art and Creativity
+              </p>
+              <p class="subtitle">
+                Animation, Motion graphics and maybe a little story telling
               </p>
               <figure class="image is-1by1">
                 <opti-image width="500" height="500" />
@@ -59,23 +86,10 @@
           <div class="tile is-parent">
             <article class="tile is-child box">
               <p class="title">
-                Other Cool Things
+                Politics and Life
               </p>
               <p class="subtitle">
-                Just as cool
-              </p>
-              <figure class="image is-1by1">
-                <opti-image width="500" height="500" />
-              </figure>
-            </article>
-          </div>
-          <div class="tile is-parent">
-            <article class="tile is-child box">
-              <p class="title">
-                All the cool
-              </p>
-              <p class="subtitle">
-                that is all
+                with a little work experience thrown in
               </p>
               <figure class="image is-1by1">
                 <opti-image width="500" height="500" />
