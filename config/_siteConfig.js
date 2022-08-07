@@ -31,13 +31,13 @@ export default {
       link: '/categories'
     },
     {
-      name: 'Github Repo',
-      link: '',
+      name: 'Github',
+      link: 'https://github.com/xcarolan',
       target: '_blank'
     },
     {
-      name: 'Placeholder',
-      link: '',
+      name: 'LinkedIn',
+      link: 'https://www.linkedin.com/in/sylvestercarolan/',
       target: '_blank'
     }
   ],
