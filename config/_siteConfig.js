@@ -12,7 +12,7 @@ export default {
   siteName: 'Sylvester Carolan',
   tagline: 'My Place',
   featureImage: '/uploads/home-hero.jpg',
-  logo: 'logo.svg', // 'logo-component', // or '/logo.svg' for regular image
+  logo: '/logo.png', // logo.svg', // 'logo-component', // or '/logo.svg' for regular image
   googleAnalytics: {
     on: true,
     id: process.env.GOOGLE_ANALYTICS_ID
