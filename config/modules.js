@@ -7,6 +7,11 @@ if (process.env.URL && process.argv[2] === 'generate') {
   axiosSettings = {
     baseURL: url
   }
+} else if (process.env.NODE_ENV === 'development') {
+  // In development, use relative URLs
+  axiosSettings = {
+    baseURL: '/'
+  }
 }
 
 export const modules = [

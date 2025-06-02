@@ -1,5 +1,5 @@
 ---
 name: Writing
-image: https://picsum.photos/1800/1801
+image: /uploads/markup-hero.jpg
 ---
 Stuff 

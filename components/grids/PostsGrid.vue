@@ -6,9 +6,9 @@
   >
     <template v-slot:default="{ item }">
       <post-card
-        :title="item.title"
+        :title="item.title || item.name"
         :link="item.slug ? `/${item.slug}` : ''"
-        :image="item.featureImage"
+        :image="item.featureImage || item.image"
         :author="item.author"
         :date="item.date"
       />

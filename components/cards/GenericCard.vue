@@ -11,7 +11,6 @@
             :height="imageRatio[1]"
             :sizes="`(min-width: 768px) ${100 / $siteConfig.posts.perRow}vw`"
           />
-          <loading-spinner position="absolute" />
         </figure>
       </component>
     </div>
@@ -69,7 +68,16 @@ export default {
     },
     responsiveImage() {
       if (this.image.indexOf('/uploads') === 0) {
-        return require(`~/assets${this.image}`)
+        // For development mode, just return the direct path since images are in static/uploads
+        if (process.env.NODE_ENV === 'development') {
+          return { src: this.image, srcSet: '' }
+        }
+        // For production, try to require from assets
+        try {
+          return require(`~/assets${this.image}`)
+        } catch (e) {
+          return { src: this.image, srcSet: '' }
+        }
       }
       return { src: this.image, srcSet: '' }
     }

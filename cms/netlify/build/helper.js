@@ -30,6 +30,7 @@ export function createPagination(numPages, items, dir) {
       'UTF-8'
     )
     chunkWriteStream.write(JSON.stringify(paginated[i]))
+    chunkWriteStream.end()
   }
   return paginated.length
 }
@@ -41,6 +42,7 @@ export function createMeta(newMeta, file) {
   const combined = Object.assign(meta, newMeta)
   const chunkWriteStream = fs.createWriteStream(file, 'UTF-8')
   chunkWriteStream.write(JSON.stringify(combined))
+  chunkWriteStream.end()
 }
 export function createAll(fromDir, toFile, apiDir) {
   if (!fs.existsSync(apiDir)) {
