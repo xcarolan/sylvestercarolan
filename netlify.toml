@@ -1,5 +1,5 @@
 [build]
   publish = "dist"
-  command = "npm install --legacy-peer-deps && npm run generate"
+  command = "npm ci --legacy-peer-deps && npm run generate"
 [build.environment]
   NODE_VERSION = "20"
