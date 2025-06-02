@@ -1,5 +1,5 @@
 ---
 name: Science
-image: https://picsum.photos/1800/1801
+image: /uploads/inside-glacier-cave-2.jpg
 ---
 Stuff 

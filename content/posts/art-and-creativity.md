@@ -1,5 +1,5 @@
 ---
 name: Art and Creativity
-image: https://picsum.photos/1800/1801
+image: /uploads/about-hero.jpg
 ---
 Stuff 
