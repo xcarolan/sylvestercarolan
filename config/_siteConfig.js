@@ -10,7 +10,8 @@ import theCMS from '../cms/netlify/cms'
  */
 export default {
   siteName: 'Sylvester Carolan',
-  tagline: 'My Place',
+  tagline:
+    'Solutions engineer — 20+ years building regulated, high-concurrency data platforms; now building auditable AI for civic life',
   featureImage: '/uploads/home-hero.jpg',
   logo: '/logo.png', // logo.svg', // 'logo-component', // or '/logo.svg' for regular image
   googleAnalytics: {

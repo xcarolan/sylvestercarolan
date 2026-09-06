@@ -16,6 +16,14 @@
             keeps me laughing and loving life. I call Raleigh, North Carolina
             home.
           </p>
+          <p>
+            Professionally: I'm a solutions engineer and architect — 20+ years
+            building regulated, high-concurrency data platforms, most recently
+            a production-grade auditable-LLM civic platform. I build the bridge
+            between legacy systems and modern AI delivery: LLM extraction that
+            feeds code-computed decisions, every claim cited to a source, every
+            output reproducible and audit-trailed.
+          </p>
 
           <h3>Why this site?</h3>
           <p>
@@ -41,9 +49,38 @@
 
           <strong>Work Experience</strong>
           <p>
-            What are some of the experiences I’ve had during my time at work?
-            Building teams, being in difficult situations, planning,
-            communication, leading, learning.
+            Twenty-plus years building regulated, high-concurrency data
+            platforms — front-to-back trading systems, resilience
+            infrastructure for thousands of enterprise applications, and most
+            recently a production-grade civic AI platform.
+          </p>
+          <ul>
+            <li>
+              <strong>Clued In Democracy (Founder, Principal Engineer):</strong>
+              built and operate a grounded-LLM pipeline that turns messy public
+              records into verified, deterministic assessments — every claim
+              cited to a primary source, scores computed by code (never trusted
+              to the model), cross-model verification, human review gates, and
+              1,500+ tests.
+            </li>
+            <li>
+              <strong>Wells Fargo (Engineering Lead):</strong> resilience and
+              automated-failover infrastructure for 5,000+ enterprise
+              applications; governance, security, and observability standards
+              for regulated pipelines; led organization-wide adoption of an
+              enterprise orchestration platform.
+            </li>
+            <li>
+              <strong>Credit Suisse (SVP &amp; Regional Tech Lead):</strong>
+              directed engineering for a high-frequency transaction engine and
+              its migration from monolithic legacy code to distributed
+              microservices; built and led global teams up to 200+ engineers.
+            </li>
+          </ul>
+          <p>
+            <strong>Toolbox:</strong> Go · Python · SQL · PostgreSQL at scale ·
+            Kubernetes (Talos, GKE) · LLM orchestration · event-driven
+            architectures.
           </p>
           <strong>Politics and Life</strong>
           <p>
