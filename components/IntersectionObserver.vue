@@ -3,10 +3,11 @@
 </template>
 
 <script>
-require('intersection-observer')
+import 'intersection-observer'
 
 export default {
   name: 'IntersectionObserver',
+  emits: ['view'],
   mounted() {
     const observer = new window.IntersectionObserver((e) => {
       if (e[0].isIntersecting) {
@@ -32,7 +33,7 @@ export default {
         bounding.bottom <=
           (window.innerHeight || document.documentElement.clientHeight)
       )
-    }
-  }
+    },
+  },
 }
 </script>

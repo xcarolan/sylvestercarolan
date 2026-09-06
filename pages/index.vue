@@ -4,46 +4,30 @@
       <button
         v-if="$siteConfig.newsletter.on"
         class="button is-primary"
-        @click="$eventBus.$emit('modal-triggered', 'newsletter-modal')"
+        @click="$eventBus.emit('modal-triggered', 'newsletter-modal')"
       >
         Subscribe To Newsletter
       </button>
     </site-hero>
     <main-section theme="one-column">
-      <template v-slot:default>
+      <template #default>
         <!-- All Posts -->
         <posts-grid />
       </template>
-      <template v-slot:sidebar>
-        Nothing here
-      </template>
+      <template #sidebar> Nothing here </template>
     </main-section>
     <news-letter-form-modal />
   </div>
 </template>
 
-<script>
-import { mapState } from 'vuex'
-import { setPageData } from '../helper'
-import NewsLetterFormModal from '~/components/NewsLetterFormModal'
+<script setup>
+const { $siteConfig } = useNuxtApp()
+const pageStore = usePageStore()
+const { title, subtitle, featureImage } = storeToRefs(pageStore)
 
-export default {
-  name: 'HomePage',
-  head() {
-    return {
-      title: `Home | ${this.$siteConfig.siteName}`
-    }
-  },
-  components: {
-    NewsLetterFormModal
-  },
-  computed: {
-    ...mapState(['title', 'subtitle', 'featureImage'])
-  },
-  fetch({ store, params }) {
-    setPageData(store, { slug: 'home' })
-  }
-}
+await pageStore.set({ slug: 'home' })
+
+useHead({ title: `Home | ${$siteConfig.siteName}` })
 </script>
 
 <style>

@@ -1,5 +1,7 @@
-import { CMS } from '../config/_siteConfig'
+import CMS from '../cms/netlify/cms.js'
+
 const cms = new CMS()
-const runBefore = require(`${__dirname}/../cms/${cms.slug}/hooks/beforeBuild`)
-  .default
+const { default: runBefore } = await import(
+  `../cms/${cms.slug}/hooks/beforeBuild.js`
+)
 runBefore()

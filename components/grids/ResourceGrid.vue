@@ -9,9 +9,9 @@
       :bottom-loader="!allLoaded && firstPageLoaded"
       :theme="theme"
       :per-row="perRow"
-      @atEnd="loadMore()"
+      @at-end="loadMore()"
     >
-      <template v-slot:default="{ item }">
+      <template #default="{ item }">
         <slot :item="item"></slot>
       </template>
     </presentational-grid>
@@ -36,9 +36,9 @@ export default {
       type: Array,
       default() {
         return []
-      }
+      },
     },
-    exclude: { type: String, default: '' }
+    exclude: { type: String, default: '' },
   },
   data() {
     return {
@@ -47,23 +47,22 @@ export default {
       resources: [],
       page: 0,
       allPostsLoaded: false,
-      loading: false
+      loading: false,
     }
   },
   computed: {
     resourceController() {
       return isString(this.resource) ? this.$cms[this.resource] : this.resource
-    }
+    },
   },
   created() {
-    this.$eventBus.$on('route-changed', this.reset)
+    this.$eventBus.on('route-changed', this.reset)
   },
-  destroyed() {
-    this.$eventBus.$off('route-changed', this.reset)
+  beforeUnmount() {
+    this.$eventBus.off('route-changed', this.reset)
   },
   methods: {
     reset() {
-      console.log('resetting resource grid')
       this.resourceController.reset()
       this.page = 0
       this.allLoaded = false
@@ -93,9 +92,9 @@ export default {
         try {
           resources = await this.resourceController.getByPage(
             this.page,
-            this.resourceFilters
+            this.resourceFilters,
           )
-        } catch (err) {
+        } catch {
           this.allLoaded = true
           return
         }
@@ -113,10 +112,10 @@ export default {
       try {
         const resources = await this.resourceController.getByNumber(
           this.number,
-          this.resourceFilters
+          this.resourceFilters,
         )
         return resources
-      } catch (err) {
+      } catch {
         return []
       }
     },
@@ -146,7 +145,7 @@ export default {
         return resource.slug !== this.exclude
       }
       return resource
-    }
-  }
+    },
+  },
 }
 </script>

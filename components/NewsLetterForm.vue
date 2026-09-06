@@ -32,9 +32,10 @@
 
 <script>
 export default {
+  emits: ['submit'],
   data() {
     return {
-      email: ''
+      email: '',
     }
   },
   computed: {
@@ -43,7 +44,7 @@ export default {
         return this.$siteConfig.newsletter.mailchimp.formAction
       }
       return this.$siteConfig.newsletter.custom.formAction
-    }
-  }
+    },
+  },
 }
 </script>

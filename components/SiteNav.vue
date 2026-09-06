@@ -20,7 +20,7 @@
     <div
       :class="{
         'navbar-menu': true,
-        'is-active': active
+        'is-active': active,
       }"
     >
       <ul class="navbar-end">
@@ -31,7 +31,7 @@
           @click="active = false"
         >
           <component
-            :is="item.link.startsWith('http') ? 'a' : 'nuxt-link'"
+            :is="item.link.startsWith('http') ? 'a' : 'NuxtLink'"
             :href="item.link"
             :to="item.link"
             :target="item.target ? item.target : '_self'"
@@ -54,9 +54,9 @@ export default {
   components: { SiteSearch, HamburgerButton },
   data() {
     return {
-      active: false
+      active: false,
     }
-  }
+  },
 }
 </script>
 <style lang="scss" scoped>

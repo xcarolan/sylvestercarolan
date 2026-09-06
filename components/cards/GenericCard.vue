@@ -1,12 +1,11 @@
 <template>
   <div class="card">
     <div class="card-image">
-      <component :is="link ? 'nuxt-link' : 'span'" :to="link">
+      <component :is="link ? 'NuxtLink' : 'span'" :to="link">
         <figure :class="`image is-${imageRatioClass}`">
-          <opti-image
+          <NuxtImg
             v-if="image"
-            :src="responsiveImage.src"
-            :srcset="responsiveImage.srcSet"
+            :src="image"
             :width="imageRatio[0]"
             :height="imageRatio[1]"
             :sizes="`(min-width: 768px) ${100 / $siteConfig.posts.perRow}vw`"
@@ -19,12 +18,10 @@
         <div class="media-content">
           <nuxt-link :to="link">
             <h3
-              :class="
-                `title
+              :class="`title
                 is-5
                 has-text-weight-light
-                ${title ? '' : 'empty-content-placeholder'}`
-              "
+                ${title ? '' : 'empty-content-placeholder'}`"
             >
               {{ title }}
             </h3>
@@ -32,7 +29,7 @@
               :class="{
                 subtitle: true,
                 'is-6': true,
-                'empty-content-placeholder': !$slots.default
+                'empty-content-placeholder': !$slots.default,
               }"
             >
               <slot></slot>
@@ -50,7 +47,7 @@ export default {
     title: { type: String, default: '' },
     image: { type: String, default: '' },
     link: { type: String, default: '' },
-    imageDimensions: { type: String, default: imageDimensionDefault }
+    imageDimensions: { type: String, default: imageDimensionDefault },
   },
   computed: {
     imageRatioClass() {
@@ -66,22 +63,7 @@ export default {
           return size * 2000
         })
     },
-    responsiveImage() {
-      if (this.image.indexOf('/uploads') === 0) {
-        // For development mode, just return the direct path since images are in static/uploads
-        if (process.env.NODE_ENV === 'development') {
-          return { src: this.image, srcSet: '' }
-        }
-        // For production, try to require from assets
-        try {
-          return require(`~/assets${this.image}`)
-        } catch (e) {
-          return { src: this.image, srcSet: '' }
-        }
-      }
-      return { src: this.image, srcSet: '' }
-    }
-  }
+  },
 }
 </script>
 <style scoped lang="scss">

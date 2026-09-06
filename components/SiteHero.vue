@@ -1,10 +1,11 @@
 <template>
   <section :class="`hero is-medium hero-theme-${computedTheme}`">
-    <img
+    <NuxtImg
+      v-if="image"
       class="hero-bg-img"
-      :src="responsiveImage.src"
-      :lazy="false"
-      :srcset="responsiveImage.srcSet"
+      :src="image"
+      sizes="100vw"
+      :loading="'eager'"
     />
     <div class="hero-body">
       <div class="container">
@@ -33,22 +34,16 @@ export default {
     subtitle: { type: String, default: '' },
     image: { type: String, default: '' },
     color: { type: String, default: '#469af0' },
-    theme: { type: String, default: '' }
+    theme: { type: String, default: '' },
   },
   computed: {
-    responsiveImage() {
-      if (this.image.indexOf('/uploads') === 0) {
-        return require(`~/assets${this.image}`)
-      }
-      return { src: this.image, srcSet: '' }
-    },
     computedTheme() {
       if (this.theme === '' && this.$siteConfig.hero.theme) {
         return this.$siteConfig.hero.theme
       }
       return this.theme || 'mist'
-    }
-  }
+    },
+  },
 }
 </script>
 

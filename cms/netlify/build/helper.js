@@ -2,7 +2,7 @@ import fs from 'fs'
 import rimraf from 'rimraf'
 import chunk from 'lodash.chunk'
 import matter from 'gray-matter'
-import { flattenResource } from '../helper'
+import { flattenResource } from '../helper.js'
 
 export function compareDates(a, b) {
   const aParsed = Date.parse(a.data.date)
@@ -27,7 +27,7 @@ export function createPagination(numPages, items, dir) {
     currentPage = i + 1
     const chunkWriteStream = fs.createWriteStream(
       `${dir}/page-${currentPage}.json`,
-      'UTF-8'
+      'UTF-8',
     )
     chunkWriteStream.write(JSON.stringify(paginated[i]))
     chunkWriteStream.end()
@@ -37,7 +37,7 @@ export function createPagination(numPages, items, dir) {
 export function createMeta(newMeta, file) {
   let meta = {}
   if (fs.existsSync(file)) {
-    meta = require(file)
+    meta = JSON.parse(fs.readFileSync(file, 'utf8'))
   }
   const combined = Object.assign(meta, newMeta)
   const chunkWriteStream = fs.createWriteStream(file, 'UTF-8')
@@ -49,23 +49,28 @@ export function createAll(fromDir, toFile, apiDir) {
     fs.mkdirSync(apiDir, { recursive: true })
   }
 
-  return new Promise(async (resolve, reject) => {
-    try {
-      const files = await fs.promises.readdir(fromDir)
-      const contents = await Promise.all(files.map(async file => {
-        const content = await fs.promises.readFile(`${fromDir}/${file}`, 'utf8')
-        const parsed = matter(content)
-        if (!parsed.data) parsed.data = {}  // Initialize if undefined
-        parsed.data.slug = file.replace(/.md$/, '')
-        return parsed
-      }))
-      
-      const sorted = contents.sort(compareDates).reverse()
-      const flattened = flattenResource(sorted)
-      await fs.promises.writeFile(toFile, JSON.stringify(flattened))
-      resolve(flattened)
-    } catch (err) {
-      reject(err)
-    }
+  return new Promise((resolve, reject) => {
+    fs.promises
+      .readdir(fromDir)
+      .then(async (files) => {
+        const contents = await Promise.all(
+          files.map(async (file) => {
+            const content = await fs.promises.readFile(
+              `${fromDir}/${file}`,
+              'utf8',
+            )
+            const parsed = matter(content)
+            if (!parsed.data) parsed.data = {} // Initialize if undefined
+            parsed.data.slug = file.replace(/.md$/, '')
+            return parsed
+          }),
+        )
+
+        const sorted = contents.sort(compareDates).reverse()
+        const flattened = flattenResource(sorted)
+        await fs.promises.writeFile(toFile, JSON.stringify(flattened))
+        resolve(flattened)
+      })
+      .catch(reject)
   })
 }

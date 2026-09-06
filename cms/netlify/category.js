@@ -1,12 +1,12 @@
-import { getMixins } from './mixins'
+import { getMixins } from './mixins.js'
 
 class Category {
-  constructor(axios) {
+  constructor(fetcher) {
     this.slug = 'category'
     this.slugPlural = 'categories'
     this.pretty = 'Category'
     this.plural = 'Categories'
-    this.axios = axios
+    this.fetcher = fetcher
   }
 }
 

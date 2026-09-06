@@ -1,5 +1,5 @@
-<template functional>
-  <div :class="`spinner-wrapper spinner-position-${props.position}`">
+<template>
+  <div :class="`spinner-wrapper spinner-position-${position}`">
     <div class="spinner"></div>
   </div>
 </template>
@@ -8,8 +8,8 @@
 export default {
   name: 'LoadingSpinner',
   props: {
-    position: { type: String, default: 'relative' }
-  }
+    position: { type: String, default: 'relative' },
+  },
 }
 </script>
 

@@ -6,12 +6,7 @@
     </main-section>
   </div>
 </template>
-<script>
-export default {
-  head() {
-    return {
-      title: `Categories | ${this.$siteConfig.siteName}`
-    }
-  }
-}
+<script setup>
+const { $siteConfig } = useNuxtApp()
+useHead({ title: `Categories | ${$siteConfig.siteName}` })
 </script>
