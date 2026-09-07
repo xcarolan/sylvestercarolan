@@ -28,23 +28,21 @@
 <script setup>
 const route = useRoute()
 const { $cms } = useNuxtApp()
-const pageStore = usePageStore()
-const { name, content, image } = storeToRefs(pageStore)
 
-function loadCategory() {
-  const targetSlug = route.params.single
-  return pageStore.set({
-    resource: 'category',
-    slug: targetSlug,
-    isStale: () => route.params.single !== targetSlug,
-  })
-}
+// A page-local useAsyncData ref (not a shared global store mutated as a
+// side effect) so Nuxt's own out-of-order-response protection actually
+// applies, and so another page's prefetched payload/data can never bleed
+// into this one — each is isolated by its own key.
+const { data: category } = await useAsyncData(
+  () => `category-${route.params.single}`,
+  () => $cms.category.getOne(route.params.single),
+)
 
-await useAsyncData(() => `category-${route.params.single}`, loadCategory)
-// Navigating between two categories reuses this same route component, so
-// script setup doesn't re-run — an explicit watcher is what actually
-// refetches on subsequent client-side navigations.
-watch(() => route.params.single, loadCategory)
+const name = computed(() => category.value?.name || '')
+const content = computed(() => category.value?.content || '')
+const image = computed(() => category.value?.image || '')
+
+usePageMeta({ title: name, subtitle: content, image })
 
 const { data: allCats } = await useAsyncData('all-categories', () =>
   $cms.category.getAll(),

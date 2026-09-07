@@ -1,6 +1,10 @@
 <template>
   <div id="home-page" class="page-wrapper home-page">
-    <site-hero :title="title" :subtitle="subtitle" :image="featureImage">
+    <site-hero
+      :title="$siteConfig.siteName"
+      :subtitle="$siteConfig.tagline"
+      :image="$siteConfig.featureImage"
+    >
       <button
         v-if="$siteConfig.newsletter.on"
         class="button is-primary"
@@ -22,12 +26,12 @@
 
 <script setup>
 const { $siteConfig } = useNuxtApp()
-const pageStore = usePageStore()
-const { title, subtitle, featureImage } = storeToRefs(pageStore)
 
-await pageStore.set({ slug: 'home' })
-
-useHead({ title: `Home | ${$siteConfig.siteName}` })
+usePageMeta({
+  title: $siteConfig.siteName,
+  subtitle: $siteConfig.tagline,
+  image: $siteConfig.featureImage,
+})
 </script>
 
 <style>

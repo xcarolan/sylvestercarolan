@@ -7,6 +7,8 @@
   </div>
 </template>
 <script setup>
-const { $siteConfig } = useNuxtApp()
-useHead({ title: `Categories | ${$siteConfig.siteName}` })
+usePageMeta({
+  title: 'Categories',
+  image: 'https://picsum.photos/1800/1801',
+})
 </script>

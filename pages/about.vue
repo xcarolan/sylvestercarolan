@@ -130,6 +130,9 @@
   </div>
 </template>
 <script setup>
-const { $siteConfig } = useNuxtApp()
-useHead({ title: `About | ${$siteConfig.siteName}` })
+usePageMeta({
+  title: 'About Me',
+  subtitle: 'Sylvester Carolan',
+  image: '/uploads/about-hero.jpg',
+})
 </script>

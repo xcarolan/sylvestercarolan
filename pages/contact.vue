@@ -48,6 +48,9 @@
   </div>
 </template>
 <script setup>
-const { $siteConfig } = useNuxtApp()
-useHead({ title: `Contact | ${$siteConfig.siteName}` })
+usePageMeta({
+  title: 'Contact Me',
+  subtitle: 'Drop me a note',
+  image: '/uploads/contact-hero.jpg',
+})
 </script>

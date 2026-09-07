@@ -33,27 +33,27 @@
 import { getFormattedDate } from '~/helper'
 
 const route = useRoute()
-const { $siteConfig } = useNuxtApp()
-const pageStore = usePageStore()
-const { title, subtitle, featureImage, author, category, slug, content } =
-  storeToRefs(pageStore)
+const { $siteConfig, $cms } = useNuxtApp()
 
-function loadPost() {
-  const targetSlug = route.params.singlePost
-  return pageStore.set({
-    resource: 'post',
-    slug: targetSlug,
-    isStale: () => route.params.singlePost !== targetSlug,
-  })
-}
+// A page-local useAsyncData ref (not a shared global store mutated as a
+// side effect) so Nuxt's own out-of-order-response protection actually
+// applies, and so another page's prefetched payload/data can never bleed
+// into this one — each is isolated by its own key.
+const { data: post } = await useAsyncData(
+  () => `post-${route.params.singlePost}`,
+  () => $cms.post.getOne(route.params.singlePost),
+)
 
-await useAsyncData(() => `post-${route.params.singlePost}`, loadPost)
-// Navigating between two posts reuses this same route component, so
-// script setup doesn't re-run — an explicit watcher is what actually
-// refetches on subsequent client-side navigations.
-watch(() => route.params.singlePost, loadPost)
+const title = computed(() => post.value?.title || '')
+const subtitle = computed(() => post.value?.subtitle || '')
+const featureImage = computed(() => post.value?.featureImage || '')
+const author = computed(() => post.value?.author || '')
+const category = computed(() => post.value?.category || [])
+const slug = computed(() => post.value?.slug || '')
+const content = computed(() => post.value?.content || '')
+const date = computed(() => getFormattedDate(post.value?.date))
 
-const date = computed(() => getFormattedDate(pageStore.date))
+usePageMeta({ title, subtitle, image: featureImage })
 </script>
 <style scoped lang="scss">
 .edit-post {
