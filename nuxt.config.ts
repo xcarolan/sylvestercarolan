@@ -86,7 +86,15 @@ export default defineNuxtConfig({
     css: {
       preprocessorOptions: {
         scss: {
-          additionalData: '@import "@/assets/scss/_vars.scss";'
+          additionalData: '@import "@/assets/scss/_vars.scss";',
+          // quietDeps silences bulma's own deprecated sass (global
+          // built-ins, `/` division, legacy color functions) under
+          // node_modules. Our own scss (assets/scss/*) also still
+          // uses the legacy @import syntax Dart Sass is deprecating;
+          // silence that category too rather than a partial @use
+          // migration right now.
+          quietDeps: true,
+          silenceDeprecations: ['import']
         }
       },
       postcss:
