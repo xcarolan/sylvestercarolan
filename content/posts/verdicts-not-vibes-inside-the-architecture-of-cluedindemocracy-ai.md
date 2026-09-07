@@ -13,9 +13,6 @@ date: 2026-09-07T20:37:32.374Z
 featureImage: /uploads/code.jpg
 draft: false
 ---
-
----
-
 The design brief was simple to state and brutal to build: **take a candidate's documented public record and render a verdict on whether they fit the office they're running for.** Not a poll, not a vibe check, not "both sides have points" — a verdict, with citations, on a scored scale, for every candidate in a race.
 
 The engineering problem hiding inside that brief is trust. When you publish a defensible score of a real person running for real office, you do not get to hand the arithmetic to a language model and hope. Every number on the page has to be derivable, checkable, and attributable to a source. So we built the system around one governing principle that shows up in every layer of the stack:
@@ -60,7 +57,7 @@ The determinism extends to the fine print:
 
 Two kill switches round it out: an authoritative-record flag so Not-qualified determinations are only possible once the disqualifier records are populated, and a guard so a re-write can never silently un-reject an already-published verdict as a side effect.
 
-The lesson generalizes: **when an LLM produces a number that matters, treat the number as testimony, not computation.** Testimony is a research finding to be verified; computation is something your code should do.
+The lesson generalizes: **when an LLM produces a number that matters, treat it as a claim, not a computation.** Models don't testify — they generate, fluently and confidently, and sometimes they simply invent. A claim is something you verify against the record before it means anything; computation is something your code should do.
 
 ---
 
