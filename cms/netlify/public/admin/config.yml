@@ -1,6 +1,11 @@
 backend:
   name: git-gateway
   branch: master # Branch to update (optional; defaults to master)
+# When served from localhost, this makes the CMS talk to a local proxy
+# server (npm run cms-proxy) instead of Identity/Git Gateway, reading
+# and writing straight to your local git working copy. Has no effect
+# on the deployed site.
+local_backend: true
 # This line should *not* be indented
 media_folder: "public/uploads" # Media files will be stored in the repo under public/uploads
 public_folder: "/uploads" # The src attribute for uploaded media will begin with /images/uploads
