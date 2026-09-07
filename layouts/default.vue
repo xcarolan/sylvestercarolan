@@ -26,7 +26,7 @@ const pageStore = usePageStore()
 const route = useRoute()
 const img = useImage()
 
-const origin = useRequestURL().origin
+const origin = useRuntimeConfig().public.siteUrl || useRequestURL().origin
 const fullUrl = computed(() => `${origin}${route.fullPath}`)
 
 useHead({

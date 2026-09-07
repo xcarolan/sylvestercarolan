@@ -24,6 +24,16 @@ export default defineNuxtConfig({
 
   ssr: true,
 
+  runtimeConfig: {
+    public: {
+      // Netlify sets these at build time; DEPLOY_PRIME_URL is the
+      // per-deploy URL (correct for branch/PR previews), URL is the
+      // canonical production URL. Falls back to the request origin
+      // (e.g. localhost) outside Netlify.
+      siteUrl: process.env.DEPLOY_PRIME_URL || process.env.URL || '',
+    },
+  },
+
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },
     head: {
