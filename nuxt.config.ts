@@ -30,7 +30,24 @@ export default defineNuxtConfig({
     // fails to resolve (Vite pre-transform error) for this project's
     // build setup; disabling the feature avoids that code path
     // entirely rather than working around the failed resolution.
-    appManifest: false
+    appManifest: false,
+    defaults: {
+      nuxtLink: {
+        // NuxtLink prefetches a linked page's payload as soon as it's
+        // visible (e.g. every "All Categories" sidebar link, every
+        // grid card) — and since our post/category pages are in
+        // nitro.prerender.routes, shouldLoadPayload() treats them as
+        // real payloads to fetch. That payload includes this app's
+        // Pinia state (used for per-page title/content, since it's
+        // shared globally rather than page-scoped), so prefetching a
+        // link you're not even navigating to silently overwrites the
+        // currently-displayed page's data with the prefetched page's.
+        // Disabling prefetch here is independent of build-time
+        // prerendering, which still generates every route's static
+        // HTML/payload for the actual deployed site.
+        prefetch: false
+      }
+    }
   },
 
   runtimeConfig: {
