@@ -96,6 +96,7 @@ export default {
           )
         } catch {
           this.allLoaded = true
+          this.loading = false
           return
         }
       }
@@ -120,6 +121,14 @@ export default {
       }
     },
     resourceFilters(resource) {
+      // Malformed content (e.g. a file missing its category field
+      // entirely) can never match a category filter — treat it as a
+      // non-match instead of crashing the whole page's filter() call,
+      // which silently aborts pagination for every resource on that
+      // page, not just the malformed one.
+      if (this.category.length && !Array.isArray(resource.category)) {
+        return false
+      }
       if (this.exclude && this.category.length) {
         if (Array.isArray(this.category)) {
           return (
