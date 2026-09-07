@@ -1,5 +1,5 @@
 ---
-name: Politics and Life
+name: Politics
 image: /uploads/politics.jpg
 ---
 My thoughts on politics and life.
