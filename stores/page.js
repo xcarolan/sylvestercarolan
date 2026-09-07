@@ -29,7 +29,7 @@ export const usePageStore = defineStore('page', {
           subtitle: $siteConfig.tagline,
           featureImage: $siteConfig.featureImage,
         })
-        return
+        return true
       }
       const theResource = isString(resource) ? $cms[resource] : resource
       const fetched = await theResource.getOne(slug)
@@ -38,6 +38,7 @@ export const usePageStore = defineStore('page', {
         slug,
       })
       this.$patch(data)
+      return true
     },
   },
 })

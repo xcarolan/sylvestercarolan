@@ -68,7 +68,11 @@ export default defineNuxtConfig({
   ],
 
   image: {
-    provider: 'netlify'
+    // The netlify provider's /.netlify/images resizing endpoint only
+    // exists on Netlify's actual infrastructure (NETLIFY=true is set
+    // there). Locally, fall back to the built-in ipx provider so dev
+    // images actually resolve instead of 404ing.
+    provider: process.env.NETLIFY ? 'netlify' : 'ipx'
   },
 
   gtag: {
