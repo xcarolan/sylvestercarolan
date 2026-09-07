@@ -31,11 +31,20 @@ const { $cms } = useNuxtApp()
 const pageStore = usePageStore()
 const { name, content, image } = storeToRefs(pageStore)
 
-await useAsyncData(
-  () => `category-${route.params.single}`,
-  () => pageStore.set({ resource: 'category', slug: route.params.single }),
-  { watch: [() => route.params.single] },
-)
+function loadCategory() {
+  const targetSlug = route.params.single
+  return pageStore.set({
+    resource: 'category',
+    slug: targetSlug,
+    isStale: () => route.params.single !== targetSlug,
+  })
+}
+
+await useAsyncData(() => `category-${route.params.single}`, loadCategory)
+// Navigating between two categories reuses this same route component, so
+// script setup doesn't re-run — an explicit watcher is what actually
+// refetches on subsequent client-side navigations.
+watch(() => route.params.single, loadCategory)
 
 const { data: allCats } = await useAsyncData('all-categories', () =>
   $cms.category.getAll(),

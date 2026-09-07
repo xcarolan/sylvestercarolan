@@ -38,11 +38,20 @@ const pageStore = usePageStore()
 const { title, subtitle, featureImage, author, category, slug, content } =
   storeToRefs(pageStore)
 
-await useAsyncData(
-  () => `post-${route.params.singlePost}`,
-  () => pageStore.set({ resource: 'post', slug: route.params.singlePost }),
-  { watch: [() => route.params.singlePost] },
-)
+function loadPost() {
+  const targetSlug = route.params.singlePost
+  return pageStore.set({
+    resource: 'post',
+    slug: targetSlug,
+    isStale: () => route.params.singlePost !== targetSlug,
+  })
+}
+
+await useAsyncData(() => `post-${route.params.singlePost}`, loadPost)
+// Navigating between two posts reuses this same route component, so
+// script setup doesn't re-run — an explicit watcher is what actually
+// refetches on subsequent client-side navigations.
+watch(() => route.params.singlePost, loadPost)
 
 const date = computed(() => getFormattedDate(pageStore.date))
 </script>
