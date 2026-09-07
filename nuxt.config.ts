@@ -24,6 +24,15 @@ export default defineNuxtConfig({
 
   ssr: true,
 
+  experimental: {
+    // Powers isPrerendered()/smart-prefetch, which we don't use. In
+    // dev SSR this composable's server-side `import('#app-manifest')`
+    // fails to resolve (Vite pre-transform error) for this project's
+    // build setup; disabling the feature avoids that code path
+    // entirely rather than working around the failed resolution.
+    appManifest: false
+  },
+
   runtimeConfig: {
     public: {
       // Netlify sets these at build time; DEPLOY_PRIME_URL is the
