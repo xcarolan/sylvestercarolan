@@ -1,12 +1,13 @@
 ---
-title: 'My Experience Building an AI Workflow — and What It Taught Me About Software Engineering'
-subtitle: '97% of software engineers use AI. Only 3% trust it.'
+title: My Experience Building an AI Workflow — and What It Taught Me About
+  Software Engineering
+subtitle: 97% of software engineers use AI. Only 3% trust it.
 category:
   - Technology
 author: Sylvester Carolan
 date: 2026-06-04T00:00:00.000Z
 featureImage: /uploads/ai-workflow-hero.png
-draft: true
+draft: false
 ---
 97% of software engineers use AI. Only 3% trust it.
 

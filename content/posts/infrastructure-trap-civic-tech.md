@@ -1,12 +1,13 @@
 ---
-title: 'The Infrastructure Trap: Why Civic Tech Tools Never Ship'
-subtitle: Confessions of an over-engineer building a cathedral for a congregation that doesn't exist
+title: "The Infrastructure Trap: Why Civic Tech Tools Never Ship"
+subtitle: Confessions of an over-engineer building a cathedral for a
+  congregation that doesn't exist
 category:
   - Technology
 author: Sylvester Carolan
 date: 2025-10-15T20:00:00-05:00
 featureImage: /uploads/infrastructure-trap-featured.jpeg
-draft: true
+draft: false
 ---
 My wife has a pet peeve about me. She calls it "infrastructure syndrome." I'll spend three hours configuring a backup system for a project that doesn't have any data worth backing up yet. The other night she walked by my desk, saw me tweaking nginx configs for the hundredth time, and just sighed. "You're building a cathedral for a congregation that doesn't exist."
 
