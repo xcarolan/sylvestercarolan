@@ -79,9 +79,16 @@ export default defineNuxtConfig({
   image: {
     // The netlify provider's /.netlify/images resizing endpoint only
     // exists on Netlify's actual infrastructure (NETLIFY=true is set
-    // there). Locally, fall back to the built-in ipx provider so dev
-    // images actually resolve instead of 404ing.
-    provider: process.env.NETLIFY ? 'netlify' : 'ipx'
+    // there). Locally, the ipx provider (sharp-based) works for a
+    // request or two after a fresh dev server start, then every
+    // subsequent image request 500s with a sharp native-binding
+    // error ("Module did not self-register") — sharp's native addon
+    // appears to get reloaded and crash within Nitro's dev server
+    // process. `none` sidesteps sharp entirely and serves the
+    // original, unresized image locally, which is reliable; actual
+    // resizing is verified against the real Netlify provider on a
+    // deploy preview instead.
+    provider: process.env.NETLIFY ? 'netlify' : 'none'
   },
 
   gtag: {
