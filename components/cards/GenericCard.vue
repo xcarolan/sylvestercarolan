@@ -3,12 +3,19 @@
     <div class="card-image">
       <component :is="link ? 'NuxtLink' : 'span'" :to="link">
         <figure :class="`image is-${imageRatioClass}`">
+          <!--
+            @nuxt/image's `sizes` prop requires "breakpoint:value"
+            entries (matching image.screens in nuxt.config), not a raw
+            CSS media query — a malformed value here fell through to
+            requesting the raw, unscaled width/height props directly
+            (32000x18000px), rather than a proportioned viewport size.
+          -->
           <NuxtImg
             v-if="image"
             :src="image"
             :width="imageRatio[0]"
             :height="imageRatio[1]"
-            :sizes="`(min-width: 768px) ${100 / $siteConfig.posts.perRow}vw`"
+            :sizes="cardSizes"
           />
         </figure>
       </component>
@@ -56,6 +63,12 @@ export default {
     imageDimensions: { type: String, default: imageDimensionDefault },
   },
   computed: {
+    cardSizes() {
+      // Below md (768px) cards stack to full width; at md and above
+      // they take one column of the perRow grid.
+      const columnWidth = `${100 / this.$siteConfig.posts.perRow}vw`
+      return `xs:100vw sm:100vw md:${columnWidth} lg:${columnWidth} xl:${columnWidth} xxl:${columnWidth} 2xl:${columnWidth}`
+    },
     imageRatioClass() {
       const imageDimensions = this.imageDimensions || imageDimensionDefault
       return imageDimensions.toLowerCase().replace('x', 'by')

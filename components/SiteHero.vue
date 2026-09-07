@@ -1,10 +1,16 @@
 <template>
   <section :class="`hero is-medium hero-theme-${computedTheme}`">
+    <!--
+      @nuxt/image's `sizes` prop requires "breakpoint:value" entries
+      (matching image.screens in nuxt.config) — a bare value like
+      "100vw" with no breakpoint key gets misparsed into a 1px-wide
+      screen, producing a 1-2px broken srcset.
+    -->
     <NuxtImg
       v-if="image"
       class="hero-bg-img"
       :src="image"
-      sizes="100vw"
+      sizes="xs:100vw sm:100vw md:100vw lg:100vw xl:100vw xxl:100vw 2xl:100vw"
       :loading="'eager'"
     />
     <div class="hero-body">
