@@ -13,11 +13,14 @@ date: 2026-09-07T20:37:32.374Z
 featureImage: /uploads/code.jpg
 draft: false
 ---
+
+---
+
 The design brief was simple to state and brutal to build: **take a candidate's documented public record and render a verdict on whether they fit the office they're running for.** Not a poll, not a vibe check, not "both sides have points" — a verdict, with citations, on a scored scale, for every candidate in a race.
 
 The engineering problem hiding inside that brief is trust. When you publish a defensible score of a real person running for real office, you do not get to hand the arithmetic to a language model and hope. Every number on the page has to be derivable, checkable, and attributable to a source. So we built the system around one governing principle that shows up in every layer of the stack:
 
-> **The publisher owns the score.** Models do the reading and the drafting. The platform recomputes every stored number deterministically from source facts at write time. Draft numbers from the model are advisory; published numbers are recomputed, reproducible, and reviewed by a human before they go live.
+> **The publisher owns the score.** Models do the reading and the drafting. The platform recomputes every stored number deterministically from source facts at write time. Draft numbers from the model are advisory; published numbers are recomputed, reproducible, and human-checked before they ship.
 
 ---
 
@@ -25,7 +28,7 @@ The engineering problem hiding inside that brief is trust. When you publish a de
 
 Before we could build anything, we had to decide what a "score" means. The answer is an **office-fitness assessment**: a candidate is scored against a job description for the specific office they're running for — its duties, priorities, and requirements — not as a general statement of their worth. The same record can fit one office differently than another. Every assessment is rendered with its office and its evidence, and it is never a standalone character verdict.
 
-An assessment has four parts: **five dimension scores** (0–10) for the documented record; **a composite score** (0–10); **an assessment class** (Strong / Moderate / Weak fit / Not qualified); and **per-dimension evidence chains** — the facts each score rests on, with citations. And the whole thing runs on a constraint that shapes everything downstream: **documented public record only.** If a claim can't be cited to a primary or public source, it doesn't move a score.
+An assessment has four parts: **five dimension scores** (0–10) for the documented record; **a composite score** (0–10); **an assessment class** (Strong / Moderate / Weak / Not qualified); and **per-dimension evidence chains** — the facts each score rests on, with citations. And the whole thing runs on a constraint that shapes everything downstream: **documented public record only.** If a claim can't be cited to a primary or public source, it doesn't move a score.
 
 ### The rubric
 
@@ -43,7 +46,7 @@ From there the bands are simple: ≥7.5 **Strong**, ≥5.5 **Moderate**, below 5
 
 ## 2. Why the model never does the math
 
-The decision every other one hangs off: **language models never compute, store, or classify a published number.** Models research and draft. The Publisher — the FastAPI service at the center of the system — recomputes everything at write time in dependency-free Python. Its core scoring module is a ~1,200-line file with no external dependencies encoding the entire product logic: weights, band boundaries, the Not-qualified override, boundary flags. When any pipeline stage writes a fit assessment, the write endpoint does not trust the score the model emitted; it takes the stored dimensional scores and recomputes the composite, the verdict band, the confidence level, and the review flags from scratch.
+The decision every other one hangs off: **language models never compute, store, or classify a published number.** Models research and draft. The Publisher — the FastAPI service at the center of the system — recomputes everything at write time in dependency-free Python. Its core scoring module is a ~1,200-line file with no external dependencies encoding the entire product logic: weights, band boundaries, the Not-qualified override, boundary flags. When any pipeline stage writes a fit assessment, the write endpoint does not trust the score the model emitted; it takes the stored dimensional scores and recomputes the composite, the verdict band, confidence, and the review flags from scratch.
 
 This wasn't paranoia. Auditing earlier LLM-produced rows, **97 of 265 had been overstated by the model** — confidently, plausibly, wrong. The fix wasn't a better prompt; it was moving the arithmetic out of the model's hands entirely. (A prior generation of prompts even carried a wrong internal weighting — 1.5× where the code now says 4×/1× — which is exactly what happens when scoring rules live in prose instead of code. They now live in both, and the code is authoritative.)
 
@@ -57,7 +60,7 @@ The determinism extends to the fine print:
 
 Two kill switches round it out: an authoritative-record flag so Not-qualified determinations are only possible once the disqualifier records are populated, and a guard so a re-write can never silently un-reject an already-published verdict as a side effect.
 
-The lesson generalizes: **when an LLM produces a number that matters, treat it as a claim, not a computation.** Models don't testify — they generate, fluently and confidently, and sometimes they simply invent. A claim is something you verify against the record before it means anything; computation is something your code should do.
+The lesson generalizes: **when an LLM produces a number that matters, treat it as a claim, not a computation.** Models don't testify — they generate, fluently and confidently, sometimes inventing outright. A claim is verified against the record before it means anything; computation is something your code should do.
 
 ---
 
@@ -71,11 +74,11 @@ The lesson generalizes: **when an LLM produces a number that matters, treat it a
 - **Ad libraries** — Meta's Ad Library and Google's political-ad data, for spend, impressions, and targeting.
 - **News and web search** — not for scores directly, but for the agents that find and cite what's on the record. The sourcing rules are hard: social-media-only sources are rejected outright, opposition-research characterizations never source a position, and aggregate scorecard ratings never justify a score on their own — the underlying record must.
 
-Everything lands in **PostgreSQL** — managed Neon in production, with dev branches for local work. The codebase is deliberately old-school about the database: **raw `psycopg2`, no ORM**, additive migrations applied before the code that reads them rolls out (expand/contract), and paranoia-level guardrails: refuse to boot a development environment pointed at the production database, require SSL, and give the database host no default so a misconfiguration fails loudly instead of silently redirecting to a dev database.
+Everything lands in **PostgreSQL** — managed Neon in production with dev branches for local work. The codebase is deliberately old-school about the database: **raw `psycopg2`, no ORM**, additive migrations applied before the code that reads them rolls out (expand/contract), and paranoia-level guardrails: it refuses to boot a dev environment pointed at production, requires SSL, and gives the database host no default, so a misconfiguration fails loudly instead of silently redirecting to a dev database.
 
 Two schema decisions are the difference between an audit trail and a rumor:
 
-**Slugs are identity, and identity is hard.** Races and candidates get UEI-format slugs (e.g. `US26NC0CL2`) — always ten characters, never hand-constructed, with central helpers that must mirror the frontend exactly. This sounds trivial until a name collision quietly merges two candidates: we had a real incident where the same name in two different states was conflated until office-slug decoding caught it. Identity bugs are the most expensive class of bug in a system that publishes verdicts, so slug handling is centralized and tested.
+**Slugs are identity, and identity is hard.** Races and candidates get UEI-format slugs (e.g. `US26NC0CL2`) — always ten characters, never hand-constructed, via central helpers that mirror the frontend exactly. This sounds trivial until a name collision quietly merges two candidates: we had a real incident where the same name in two different states was conflated until office-slug decoding caught it. Identity bugs are the most expensive kind in a system that publishes verdicts, so slug handling is centralized and tested.
 
 **Policy positions are append-only.** You never mutate an active position row in place; a correction deactivates the old row and appends a new version, and the content hash identifying the position survives the version bump so fixes don't orphan their citations. The same discipline governs the adjudication ledger where review decisions are recorded (each entry noting whether it was decided by script, model, or human) and the audit-findings log.
 
@@ -91,7 +94,7 @@ For each race, agents research the office-level job description once. For each c
 
 ### Stage 2 — Cross-model verification ("Watson")
 
-Every research product is reviewed by a **second, independent model family** before it's accepted — deliberately, so one vendor's blind spots get caught by a different vendor's reviewer. A resume flows review by one family → revision by another → re-review by a third. Policy research goes through a server-side audit pass with a retry loop, itself validated against the golden anchors (see §6).
+Every research product is reviewed by a **second, independent model family** before it's accepted — deliberately, so one vendor's blind spots get caught by a different vendor's reviewer. A resume flows review by one family → revision by another → re-review by a third. Policy research goes through a server-side audit pass with a retry loop, itself validated against the golden anchors (§6).
 
 ### Stage 3 — The disqualifier scan
 
@@ -113,9 +116,9 @@ Anything flagged — boundary proximity, disqualifier proximity, a failed eviden
 
 Research can't be batched — agentic search is inherently online. But the fit chain, once research exists, is embarrassingly parallel: the same three prompts over hundreds of candidates. So production splits the work. A **research phase** runs online, per race, at modest concurrency, with a per-job cost ceiling. A **fit phase** then submits three sequential batch rounds to the Anthropic Message Batches API — the same Recruiter → Narrative → Formatter chain, at roughly **half the price** of online calls, with a ≤24-hour SLA.
 
-The batch path deliberately reuses the interactive path's **byte-identical prompts**, model registry, and write path, so batch and interactive verdicts reconcile exactly — and byte-identity is enforced mechanically: a prompt-freeze file holds SHA-256 hashes of the three fit prompts, and submission is blocked if the live prompts drift from the frozen hashes. Re-baselining a prompt is a deliberate, reviewable operation, not an accident of an edit. End to end, a full race costs on the order of a few dollars in model tokens (measured at roughly $4–6).
+The batch path deliberately reuses the interactive path's **byte-identical prompts**, model registry, and write path, so batch and interactive verdicts reconcile exactly — and byte-identity is enforced mechanically: a prompt-freeze file holds SHA-256 hashes of the three fit prompts, and submission is blocked if the live prompts drift from the frozen hashes. Re-baselining a prompt is a deliberate, reviewable operation, not an accident of an edit. End to end, a full race costs on the order of a few dollars in model tokens.
 
-The part most people miss is the state machine: **all cross-round state lives in the database, never in memory.** Each batch job's phase, round, and items are rows; a poller advances one round per CronJob tick; errored and expired items are retried. That's because the poller is a CronJob — it can be killed and restarted at any tick, and the system must resume exactly where it left off. A deterministic share of each job is held out for audit sampling, and every written result is traced for observability.
+The part most people miss is the state machine: **all cross-round state lives in the database, never in memory.** Each batch job's phase, round, and items are rows; a poller advances one round per CronJob tick; errored and expired items are retried. That's because the poller is a CronJob that can be killed and restarted at any tick; the system must resume exactly where it left off. A deterministic share of each job is held out for audit sampling, and every written result is traced for observability.
 
 The whole loop is a set of small, digest-pinned Kubernetes CronJobs: research every few minutes, the fit poller, the weekly narrative sweep, daily citation archiving with weekly citation verification, and a read-only data-integrity audit each morning.
 
@@ -135,13 +138,13 @@ The reproducibility study behind our adaptive-scoring design shows why this mach
 
 The public surface is deliberately thin: a React single-page app on Cloudflare Pages reads from the Publisher API — races, candidate assessments, report cards (PDFs rendered server-side), a per-address lookup — and a separate API edge serves licensed data. Under the hood:
 
-- **The Publisher** is a FastAPI service whose entrypoint is tiny — it assembles ~28 route modules plus CORS and middleware; the real weight, ~18,000 lines, lives in per-domain modules: races, resumes, policy, fit, review, batch, finance, narrative, publishing.
+- **The Publisher** is a FastAPI service whose entrypoint is tiny — it assembles ~28 route modules and middleware; the real weight, ~18,000 lines, lives in per-domain modules: races, resumes, policy, fit, review, batch, finance, narrative, publishing.
 - **Auth is layered.** A shared admin key (constant-time compared) guards write and admin endpoints. **Two separate Clerk apps** serve the two populations — public users of the site (accounts, payments, entitlements via Stripe) and pipeline-admin reviewers with role-based routing — because mixing them is how you accidentally give reviewers' powers to users. A staged write-auth mode (off → warn → enforce) governed the lockdown of machine write-back.
 - **The edge does security work.** Admin surfaces sit behind Cloudflare Access with service tokens; open-internet requests to the publisher must carry an edge-injected origin-verification header, or come from the private cluster's network. CORS is an explicit allowlist, not a wildcard.
 
 Deployment is GitOps. CI is **path-scoped**: changes under the pipeline directories build a container, push it to a registry, and roll out — to the managed runtime serving production and to a mirrored deployment on a private Kubernetes cluster, with CronJob image digests advanced in lockstep. Doc-only changes never trigger a deploy. The admin app follows a different path: source in one directory, a build step that stages a committed bundle, then a cluster sync — with a standing rule to edit source, never the bundle. ArgoCD-style app-of-apps syncs with pruning and self-healing; CronJob images are digest-pinned (the hard way — after a stale-image incident deployed week-old code and failed 16 of 34 races).
 
-**The test suite is the other half of the trust story**: more than 1,500 test functions across 130 files — since grown past 2,000 — all database calls mocked, golden anchors included, and an integration tier that runs nightly against a real database. The repo treats methodology and tests as one artifact: fidelity-locked prompt tests, quirk tests pinning known oddities so score changes stay attributable to methodology rather than silent drift, and a pre-commit hook that rejects broken JSON (a config file once broke silently three times).
+**The test suite is the other half of the trust story**: more than 1,500 test functions across 130 files — since grown past 2,000 — all database calls mocked, golden anchors included, and an integration tier that runs nightly against a real database. The repo treats methodology and tests as one artifact: fidelity-locked prompt tests, quirk tests pinning oddities so score changes stay attributable to methodology rather than silent drift, and a pre-commit hook that rejects broken JSON (a config file once broke silently three times).
 
 ---
 
@@ -153,7 +156,7 @@ Every rule above has a scar behind it:
 - **LLM labels can't be trusted even when they look right.** The 97-of-265 overstated rows, the wrong weighting living in prompt prose, the assessor whose prose said "disqualified" while its structured output said otherwise — each pushed more logic into deterministic code and more reconciliation into the write path.
 - **Cross-round state in memory is a lie.** Any job that can be killed and restarted must keep its state where the restart can find it — in the database.
 - **Names are not identity.** Same-name-different-state conflation produced wrong merges until slug decoding was made deterministic and central.
-- **Migration is a trust exercise.** When the narrative pipeline was ported from its original orchestration DSL to code, the port was kept byte-verbatim — prompts fidelity-locked by tests, known quirks deliberately preserved and pinned — so that any score change after the migration was attributable to the migration, not an accidental behavior shift. The constraint was only relaxed after the legacy system was fully retired.
+- **Migration is a trust exercise.** When the narrative pipeline was ported from its original orchestration DSL to code, the port was kept byte-verbatim — prompts fidelity-locked by tests, known quirks deliberately preserved and pinned — so any score change after the migration was attributable to the migration, not an accidental behavior shift. The constraint was only relaxed after the legacy system was fully retired.
 
 ---
 
