@@ -1,5 +1,6 @@
 import fs from 'fs'
 import path from 'path'
+import matter from 'gray-matter'
 import purgecss from '@fullhuman/postcss-purgecss'
 import siteConfig from './config/_siteConfig'
 
@@ -11,6 +12,13 @@ function slugsIn(sub: string) {
   return fs
     .readdirSync(dir)
     .filter((file) => file.endsWith('.md'))
+    // Draft content gets no prerendered page at all — visiting its
+    // URL directly 404s until draft is set to false, matching how
+    // it's also excluded from the generated content API.
+    .filter((file) => {
+      const raw = fs.readFileSync(path.join(dir, file), 'utf8')
+      return matter(raw).data.draft !== true
+    })
     .map((file) => file.replace(/\.md$/, ''))
 }
 

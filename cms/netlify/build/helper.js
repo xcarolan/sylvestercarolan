@@ -66,7 +66,12 @@ export function createAll(fromDir, toFile, apiDir) {
           }),
         )
 
-        const sorted = contents.sort(compareDates).reverse()
+        // Draft posts/categories are excluded from the generated API
+        // entirely (not just hidden from listings) — this is what
+        // keeps them off the live site until draft is set to false.
+        const published = contents.filter((item) => item.data.draft !== true)
+
+        const sorted = published.sort(compareDates).reverse()
         const flattened = flattenResource(sorted)
         await fs.promises.writeFile(toFile, JSON.stringify(flattened))
         resolve(flattened)

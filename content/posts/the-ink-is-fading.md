@@ -1,10 +1,10 @@
 ---
-title: The Ink is reading
+title: The Ink is Fading
 subtitle: A one-line subtitle
 category:
   - Politics
 author: Sylvester Carolan
-date: 2026-09-07T12:00:00.000Z
+date: 2026-07-07T12:00:00.000Z
 featureImage: /uploads/john-hancock.jpg
 ---
 
