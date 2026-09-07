@@ -1,12 +1,12 @@
-import { getMixins } from './mixins'
+import { getMixins } from './mixins.js'
 
 class Post {
-  constructor(axios) {
+  constructor(fetcher) {
     this.slug = 'post'
     this.slugPlural = 'posts'
     this.pretty = 'Post'
     this.plural = 'Posts'
-    this.axios = axios
+    this.fetcher = fetcher
     this.editUrl = '/admin/#/collections/posts/entries'
   }
   getEditUrl(slug) {

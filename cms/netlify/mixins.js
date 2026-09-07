@@ -1,15 +1,15 @@
 import chunk from 'lodash.chunk'
-import { flattenResource } from './helper'
+import { flattenResource } from './helper.js'
 
 /**
- * Get a single resource at a time
+ * Get a single resource by slug, from the already-generated JSON API
  * @type {{getOne(*): function}}
  */
 export const getOneMixin = {
-  getOne(slug) {
-    const resource = require(`~/content/${this.slugPlural}/${slug}.md`).default
-    return flattenResource(resource)
-  }
+  async getOne(slug) {
+    const resources = await this.getAll()
+    return resources.find((resource) => resource.slug === slug) || {}
+  },
 }
 
 /**
@@ -27,29 +27,25 @@ export const getByNumberMixin = {
       this.reset()
     }
     this.gottenPage++
-    try {
-      const resources = await this.getByPage(this.gottenPage)
-      const filtered = resources.filter(filter)
-      let numbered = chunk(filtered, number)[0]
-      numbered = numbered ? flattenResource(numbered) : []
-      numbered = flattenResource(numbered)
-      if (numbered.length < number) {
-        try {
-          const more = await this.getByNumber(
-            number - numbered.length,
-            filter,
-            false
-          )
-          numbered = numbered.concat(more)
-        } catch (err) {
-          return numbered
-        }
+    const resources = await this.getByPage(this.gottenPage)
+    const filtered = resources.filter(filter)
+    let numbered = chunk(filtered, number)[0]
+    numbered = numbered ? flattenResource(numbered) : []
+    numbered = flattenResource(numbered)
+    if (numbered.length < number) {
+      try {
+        const more = await this.getByNumber(
+          number - numbered.length,
+          filter,
+          false,
+        )
+        numbered = numbered.concat(more)
+      } catch {
+        return numbered
       }
-      return numbered
-    } catch (err) {
-      throw err
     }
-  }
+    return numbered
+  },
 }
 
 /**
@@ -64,19 +60,15 @@ export const getByPageMixin = {
         return resource
       }
     }
-    try {
-      let categories = await this.axios.$get(
-        `api/${this.slugPlural}/page-${page}.json`
-      )
-      categories = flattenResource(categories)
-      return categories.filter(filter)
-    } catch (err) {
-      throw err
-    }
+    let categories = await this.fetcher(
+      `/api/${this.slugPlural}/page-${page}.json`,
+    )
+    categories = flattenResource(categories)
+    return categories.filter(filter)
   },
   reset() {
     this.gottenPage = 0
-  }
+  },
 }
 
 /**
@@ -85,9 +77,9 @@ export const getByPageMixin = {
  */
 export const getAllMixin = {
   async getAll() {
-    const resources = await this.axios.$get(`api/${this.slugPlural}.json`)
+    const resources = await this.fetcher(`/api/${this.slugPlural}.json`)
     return flattenResource(resources)
-  }
+  },
 }
 
 /**

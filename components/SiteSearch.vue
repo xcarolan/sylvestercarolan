@@ -4,7 +4,7 @@
       'search-wrapper': true,
       active: active,
       transitioning: transitioning,
-      inactive: !active && !transitioning
+      inactive: !active && !transitioning,
     }"
   >
     <span class="search-bar">
@@ -13,7 +13,7 @@
         v-model="query"
         autocomplete="off"
         :class="{
-          input: true
+          input: true,
         }"
         type="search"
         @keyup.enter="search"
@@ -54,7 +54,7 @@
 </template>
 <script>
 export default {
-  name: 'Search',
+  name: 'SiteSearch',
   data() {
     return {
       active: false,
@@ -62,7 +62,7 @@ export default {
       matches: false,
       haystack: [],
       query: '',
-      lastQuery: ''
+      lastQuery: '',
     }
   },
   methods: {
@@ -88,7 +88,7 @@ export default {
       }
       const posts = this.haystack.length
         ? this.haystack
-        : await this.$axios.$get('/api/posts.json')
+        : await $fetch('/api/posts.json')
       const matches = posts.filter((match) => {
         return (
           match.content
@@ -123,8 +123,8 @@ export default {
           .trim() +
         append
       )
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -134,7 +134,9 @@ export default {
   input {
     width: 0;
     opacity: 0;
-    transition: 0.5s ease width, 0.5s opacity;
+    transition:
+      0.5s ease width,
+      0.5s opacity;
   }
   .search-icon {
     position: absolute;

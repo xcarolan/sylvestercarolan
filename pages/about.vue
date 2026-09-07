@@ -6,7 +6,7 @@
       image="/uploads/about-hero.jpg"
     ></site-hero>
     <main-section theme="sidebar-right">
-      <template v-slot:default>
+      <template #default>
         <div class="content">
           <quote-card />
           <h3>Bio</h3>
@@ -18,8 +18,8 @@
           </p>
           <p>
             Professionally: I'm a solutions engineer and architect — 20+ years
-            building regulated, high-concurrency data platforms, most recently
-            a production-grade auditable-LLM civic platform. I build the bridge
+            building regulated, high-concurrency data platforms, most recently a
+            production-grade auditable-LLM civic platform. I build the bridge
             between legacy systems and modern AI delivery: LLM extraction that
             feeds code-computed decisions, every claim cited to a source, every
             output reproducible and audit-trailed.
@@ -50,9 +50,9 @@
           <strong>Work Experience</strong>
           <p>
             Twenty-plus years building regulated, high-concurrency data
-            platforms — front-to-back trading systems, resilience
-            infrastructure for thousands of enterprise applications, and most
-            recently a production-grade civic AI platform.
+            platforms — front-to-back trading systems, resilience infrastructure
+            for thousands of enterprise applications, and most recently a
+            production-grade civic AI platform.
           </p>
           <ul>
             <li>
@@ -92,14 +92,10 @@
         <div class="tile is-ancestor">
           <div class="tile is-parent">
             <article class="tile is-child box">
-              <p class="title">
-                Technology
-              </p>
-              <p class="subtitle">
-                Science, Mathematics and Computing
-              </p>
+              <p class="title">Technology</p>
+              <p class="subtitle">Science, Mathematics and Computing</p>
               <figure class="image is-1by1">
-                <opti-image
+                <NuxtImg
                   src="/uploads/technology.jpg"
                   width="500"
                   height="500"
@@ -109,50 +105,31 @@
           </div>
           <div class="tile is-parent">
             <article class="tile is-child box">
-              <p class="title">
-                Art and Creativity
-              </p>
+              <p class="title">Art and Creativity</p>
               <p class="subtitle">
                 Animation, Motion graphics and maybe a little story telling
               </p>
-              <figure class="image is-1by1">
-                <opti-image width="500" height="500" />
-              </figure>
+              <figure class="image is-1by1"></figure>
             </article>
           </div>
           <div class="tile is-parent">
             <article class="tile is-child box">
-              <p class="title">
-                Politics and Life
-              </p>
-              <p class="subtitle">
-                with a little work experience thrown in
-              </p>
-              <figure class="image is-1by1">
-                <opti-image width="500" height="500" />
-              </figure>
+              <p class="title">Politics and Life</p>
+              <p class="subtitle">with a little work experience thrown in</p>
+              <figure class="image is-1by1"></figure>
             </article>
           </div>
         </div>
       </template>
 
-      <template v-slot:sidebar>
-        <h3 class="subtitle is-4">
-          Latest Posts
-        </h3>
+      <template #sidebar>
+        <h3 class="subtitle is-4">Latest Posts</h3>
         <posts-grid :per-row="1" :number="2" />
       </template>
     </main-section>
   </div>
 </template>
-<script>
-import QuoteCard from '~/components/cards/QuoteCard'
-export default {
-  head() {
-    return {
-      title: `About | ${this.$siteConfig.siteName}`
-    }
-  },
-  components: { QuoteCard }
-}
+<script setup>
+const { $siteConfig } = useNuxtApp()
+useHead({ title: `About | ${$siteConfig.siteName}` })
 </script>

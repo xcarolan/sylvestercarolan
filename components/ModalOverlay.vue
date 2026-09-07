@@ -3,7 +3,7 @@
     :class="{
       modal: true,
       'is-active': active,
-      'is-closing': closing
+      'is-closing': closing,
     }"
   >
     <div class="modal-background"></div>
@@ -21,15 +21,7 @@
         <button class="button is-success" @click="$emit('confirm')">
           {{ confirmText }}
         </button>
-        <button
-          class="button"
-          @click="
-            close()
-            $emit('cancel')
-          "
-        >
-          Cancel
-        </button>
+        <button class="button" @click="cancel">Cancel</button>
       </footer>
     </div>
   </div>
@@ -41,18 +33,23 @@ export default {
     triggerText: { type: String, default: '' },
     confirmText: { type: String, default: 'Save' },
     footer: { type: Boolean, default: false },
-    id: { type: String, required: true }
+    id: { type: String, required: true },
   },
+  emits: ['confirm', 'cancel'],
   data() {
     return {
       active: false,
-      closing: false
+      closing: false,
     }
   },
   created() {
-    this.$eventBus.$on(`modal-triggered`, (id) => {
+    this.onModalTriggered = (id) => {
       if (id === this.id) this.active = true
-    })
+    }
+    this.$eventBus.on('modal-triggered', this.onModalTriggered)
+  },
+  beforeUnmount() {
+    this.$eventBus.off('modal-triggered', this.onModalTriggered)
   },
   methods: {
     close() {
@@ -61,8 +58,12 @@ export default {
         this.active = false
         this.closing = false
       }, 300)
-    }
-  }
+    },
+    cancel() {
+      this.close()
+      this.$emit('cancel')
+    },
+  },
 }
 </script>
 <style lang="scss" scoped>

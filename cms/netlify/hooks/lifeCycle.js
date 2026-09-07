@@ -21,6 +21,6 @@ export default {
   },
   beforeUpdate() {},
   updated() {},
-  beforeDestroy() {},
-  destroy() {}
+  beforeUnmount() {},
+  unmounted() {},
 }

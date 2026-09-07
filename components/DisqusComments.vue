@@ -11,14 +11,16 @@
       v-if="$siteConfig.disqus.loadingStrategy === 'lazy'"
       @view="displayed = true"
     />
-    <vue-disqus
+    <div
       v-if="
         $siteConfig.disqus.siteShortName &&
-          (displayed || $siteConfig.disqus.loadingStrategy === 'onload')
+        (displayed || $siteConfig.disqus.loadingStrategy === 'onload')
       "
-      :shortname="$siteConfig.disqus.siteShortName"
-      :identifier="identifier"
-    />
+      ref="disqusThread"
+      class="disqus-embed"
+    >
+      <div id="disqus_thread"></div>
+    </div>
 
     <!-- Warning to Provide Disqus Site Short Name -->
     <div
@@ -29,16 +31,48 @@
     </div>
   </div>
 </template>
-<script>
-export default {
-  name: 'DisqusComments',
-  props: {
-    identifier: { type: String, required: true }
-  },
-  data() {
-    return {
-      displayed: false
-    }
+<script setup>
+const props = defineProps({
+  identifier: { type: String, required: true },
+})
+
+const { $siteConfig } = useNuxtApp()
+const route = useRoute()
+const displayed = ref(false)
+
+function loadDisqus() {
+  if (import.meta.server) return
+  const shortname = $siteConfig.disqus.siteShortName
+  if (!shortname) return
+
+  window.disqus_config = function () {
+    this.page.identifier = props.identifier
+    this.page.url = window.location.origin + route.fullPath
   }
+
+  if (window.DISQUS) {
+    window.DISQUS.reset({ reload: true, config: window.disqus_config })
+    return
+  }
+
+  const script = document.createElement('script')
+  script.src = `https://${shortname}.disqus.com/embed.js`
+  script.setAttribute('data-timestamp', String(+new Date()))
+  document.body.appendChild(script)
 }
+
+watch(displayed, (isDisplayed) => {
+  if (isDisplayed) loadDisqus()
+})
+
+onMounted(() => {
+  if ($siteConfig.disqus.loadingStrategy === 'onload') loadDisqus()
+})
+
+watch(
+  () => props.identifier,
+  () => {
+    if (displayed.value) loadDisqus()
+  },
+)
 </script>

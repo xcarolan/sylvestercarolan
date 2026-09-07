@@ -1,4 +1,5 @@
-import Vue from 'vue'
-export default ({ app }, inject) => {
-  inject('eventBus', new Vue())
-}
+import mitt from 'mitt'
+
+export default defineNuxtPlugin((nuxtApp) => {
+  nuxtApp.provide('eventBus', mitt())
+})

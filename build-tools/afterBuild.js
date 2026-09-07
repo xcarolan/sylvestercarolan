@@ -1,4 +1,7 @@
-import { CMS } from '../config/_siteConfig'
+import CMS from '../cms/netlify/cms.js'
+
 const cms = new CMS()
-const runAfter = require(`${__dirname}/../cms/${cms.slug}/hooks/afterBuild`).default
+const { default: runAfter } = await import(
+  `../cms/${cms.slug}/hooks/afterBuild.js`
+)
 runAfter()
