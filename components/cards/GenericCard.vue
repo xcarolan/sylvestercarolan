@@ -41,8 +41,14 @@
   </div>
 </template>
 <script>
+import { NuxtLink } from '#components'
 const imageDimensionDefault = '16x9'
 export default {
+  // NuxtLink must be registered explicitly to be resolvable by name
+  // from the dynamic `:is` binding below — Nuxt only auto-registers it
+  // for literal <NuxtLink> tags found at compile time in templates,
+  // not for components resolved dynamically at runtime.
+  components: { NuxtLink },
   props: {
     title: { type: String, default: '' },
     image: { type: String, default: '' },

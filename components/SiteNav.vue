@@ -32,8 +32,8 @@
         >
           <component
             :is="item.link.startsWith('http') ? 'a' : 'NuxtLink'"
-            :href="item.link"
-            :to="item.link"
+            :href="item.link.startsWith('http') ? item.link : undefined"
+            :to="item.link.startsWith('http') ? undefined : item.link"
             :target="item.target ? item.target : '_self'"
           >
             {{ item.name }}
@@ -47,11 +47,16 @@
   </nav>
 </template>
 <script>
+import { NuxtLink } from '#components'
 import SiteSearch from '~/components/SiteSearch'
 import HamburgerButton from '~/components/HamburgerButton'
 export default {
   name: 'SiteNav',
-  components: { SiteSearch, HamburgerButton },
+  // NuxtLink must be registered explicitly to be resolvable by name
+  // from the dynamic `:is` binding below — Nuxt only auto-registers it
+  // for literal <NuxtLink> tags found at compile time in templates,
+  // not for components resolved dynamically at runtime.
+  components: { SiteSearch, HamburgerButton, NuxtLink },
   data() {
     return {
       active: false,
