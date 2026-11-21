@@ -17,7 +17,7 @@
             home.
           </p>
           <p>
-            Professionally: I'm a solutions engineer and architect — 20+ years
+            Professionally: I'm a solutions engineer and architect — 30+ years
             building regulated, high-concurrency data platforms, most recently a
             production-grade auditable-LLM civic platform. I build the bridge
             between legacy systems and modern AI delivery: LLM extraction that
@@ -49,7 +49,7 @@
 
           <strong>Work Experience</strong>
           <p>
-            Twenty-plus years building regulated, high-concurrency data
+            Thirty-plus years building regulated, high-concurrency data
             platforms — front-to-back trading systems, resilience infrastructure
             for thousands of enterprise applications, and most recently a
             production-grade civic AI platform.
@@ -84,42 +84,10 @@
           </p>
           <strong>Politics and Life</strong>
           <p>
-            I often to ask myself, “How are you going to change the world
-            today?” More on this later.
+            How are you going to change the world ?
           </p>
         </div>
 
-        <div class="tile is-ancestor">
-          <div class="tile is-parent">
-            <article class="tile is-child box">
-              <p class="title">Technology</p>
-              <p class="subtitle">Science, Mathematics and Computing</p>
-              <figure class="image is-1by1">
-                <NuxtImg
-                  src="/uploads/technology.jpg"
-                  width="500"
-                  height="500"
-                />
-              </figure>
-            </article>
-          </div>
-          <div class="tile is-parent">
-            <article class="tile is-child box">
-              <p class="title">Art and Creativity</p>
-              <p class="subtitle">
-                Animation, Motion graphics and maybe a little story telling
-              </p>
-              <figure class="image is-1by1"></figure>
-            </article>
-          </div>
-          <div class="tile is-parent">
-            <article class="tile is-child box">
-              <p class="title">Politics and Life</p>
-              <p class="subtitle">with a little work experience thrown in</p>
-              <figure class="image is-1by1"></figure>
-            </article>
-          </div>
-        </div>
       </template>
 
       <template #sidebar>
