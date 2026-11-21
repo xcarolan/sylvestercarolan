@@ -12,7 +12,12 @@ export function usePageMeta({ title, subtitle, image }) {
   const fullUrl = computed(() => `${origin}${route.fullPath}`)
 
   useHead({
-    title: () => `${unref(title) || ''} | ${$siteConfig.siteName}`,
+    title: () => {
+      const t = unref(title) || ''
+      const site = $siteConfig.siteName
+      // Avoid "Site | Site" when the page title is the site name itself
+      return !t || t === site ? site : `${t} | ${site}`
+    },
     meta: [
       {
         hid: 'description',

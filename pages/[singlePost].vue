@@ -44,6 +44,15 @@ const { data: post } = await useAsyncData(
   () => $cms.post.getOne(route.params.singlePost),
 )
 
+// Unknown slugs (e.g. deleted posts) should be a real 404, not an empty page
+if (!post.value?.slug) {
+  throw createError({
+    statusCode: 404,
+    statusMessage: 'Page not found',
+    fatal: true,
+  })
+}
+
 const title = computed(() => post.value?.title || '')
 const subtitle = computed(() => post.value?.subtitle || '')
 const featureImage = computed(() => post.value?.featureImage || '')
