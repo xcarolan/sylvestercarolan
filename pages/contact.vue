@@ -13,28 +13,27 @@
               <p class="title">Hello!</p>
               <p class="subtitle">What can I do for you?</p>
               <figure class="image is-1by1">
-                <NuxtImg src="/uploads/contact-person.jpg" />
+                <NuxtImg
+                  src="/uploads/contact-person.jpg"
+                  alt="Illustration of a person waving hello"
+                />
               </figure>
-              <br />
-              <div class="content">
-                <p>
-                  <strong>
-                    Edit this page in<code>/pages/contact.vue</code>to fit your
-                    needs.
-                  </strong>
-                </p>
-                <p>
-                  This form doesn't actually work but would be easy enough to
-                  slap an action on to have it post wherever you'd like. Or put
-                  the netlify attribute on it and have netlify handle all your
-                  form submissions...
-                </p>
-              </div>
             </article>
           </div>
           <div class="tile is-parent is-8">
             <article class="tile is-child box">
-              <contact-form />
+              <div class="content">
+                <p class="title is-4">Email me</p>
+                <p>
+                  The best way to reach me is by email. I read everything and
+                  reply as soon as I can.
+                </p>
+                <p class="is-size-4">
+                  <a href="mailto:sylvester.carolan@cluedindemocracy.ai">
+                    sylvester.carolan@cluedindemocracy.ai
+                  </a>
+                </p>
+              </div>
             </article>
           </div>
         </div>
