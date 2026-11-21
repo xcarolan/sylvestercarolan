@@ -10,11 +10,11 @@
         <div class="tile is-ancestor">
           <div class="tile is-parent">
             <article class="tile is-child box">
-              <p class="title">Hello!</p>
-              <p class="subtitle">What can I do for you?</p>
+              <p class="title">Hi!</p>
+              <p class="subtitle">Just say hello!</p>
               <figure class="image is-1by1">
                 <NuxtImg
-                  src="/uploads/contact-person.jpg"
+                  src="/uploads/meLia&Jaiden.jpg"
                   alt="Illustration of a person waving hello"
                 />
               </figure>
@@ -26,7 +26,7 @@
                 <p class="title is-4">Email me</p>
                 <p>
                   The best way to reach me is by email. I read everything and
-                  reply as soon as I can.
+                  reply as soon as I can. Dont' be shy!
                 </p>
                 <p class="is-size-4">
                   <a href="mailto:sylvester.carolan@cluedindemocracy.ai">
