@@ -33,4 +33,4 @@ My compiler warning was a safeguard I chose to ignore. With open weights, anyone
 
 So what's to be done? I don't have the answers — I'm not sure anyone does yet. But something needs to be done, and some people are already trying. In Part 2, I'll highlight the organizations working on keeping AI safe — and where they're falling short.
 
-![](/uploads/danger-will-robinson-1.jpg)
+![Two engineers gesturing at large monitors displaying "CRITICAL ERROR — ALL PROCESS TERMINATED"](/uploads/danger-will-robinson-1.jpg)

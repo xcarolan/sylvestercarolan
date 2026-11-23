@@ -61,10 +61,11 @@
 When creating or editing content:
 
 1. **Front Matter**: Always include required fields (title, date, description)
-2. **Formatting**: Use consistent markdown style, one sentence per line for diffs
+2. **Formatting**: Separate paragraphs with a blank line. A single newline is a markdown soft break, so it merges the two blocks into one dense paragraph — this is what pushed posts from postiz.audrahub.com render as walls of text
 3. **Links**: Use relative links for internal content, verify external links
-4. **Images**: Place in appropriate asset directory, use descriptive filenames
+4. **Images**: Place in appropriate asset directory, use descriptive filenames; every image needs non-empty alt text
 5. **Drafts**: Mark work-in-progress with draft status
+6. **Content check**: `npm run check-content` runs during `build`/`generate` and fails on run-on paragraphs and empty alt text. Use `CONTENT_CHECK=warn` to publish anyway.
 
 ## File Structure
 

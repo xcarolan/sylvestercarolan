@@ -10,11 +10,12 @@
     "lint": "eslint .",
     "precommit": "npm run lint",
     "before-build": "node ./build-tools/beforeBuild.js",
+    "check-content": "node ./build-tools/check-content.js",
     "after-build": "node ./build-tools/afterBuild.js",
     "dev": "npm run before-build && nuxt dev -o",
-    "build": "npm run before-build && nuxt build && npm run after-build",
+    "build": "npm run before-build && npm run check-content && nuxt build && npm run after-build",
     "start": "nuxt preview",
-    "generate": "npm run before-build && nuxt generate && npm run after-build",
+    "generate": "npm run before-build && npm run check-content && nuxt generate && npm run after-build",
     "cms-proxy": "decap-server"
   },
   "dependencies": {
