@@ -18,7 +18,6 @@ There is constant pressure to deliver, deliver, deliver. Too often, safety and s
 
 
 That risk isn't distant anymore. Over the past few weeks, we've seen a wave of outages across major U.S. firms—grounded flights, banks offline, Microsoft services down. The causes are still being sorted out, but some have reportedly been linked to rushed fixes for vulnerabilities that AI tools had discovered. Urgency, tight deadlines, cut corners: I've watched that pattern play out time and again.
-
 And what about AI itself? The rush to adopt it—and the fear of falling behind—is everywhere.
 
 
@@ -31,6 +30,6 @@ That's when something stopped me cold: how easily the safeguards on open-weights
 My compiler warning was a safeguard I chose to ignore. With open weights, anyone can delete the warning entirely.
 
 
-So what's to be done? I don't have the answers — I'm not sure anyone does yet. But something needs to be done, and some people are already trying. In Part 2, I'll highlight the organizations working on keeping AI safe — and where they're falling short.
+So what's to be done? I don't have the answers — I'm not sure anyone does yet. But something needs to be done, and some people are already trying. I
 
-![Two engineers gesturing at large monitors displaying "CRITICAL ERROR — ALL PROCESS TERMINATED"](/uploads/danger-will-robinson-1.jpg)
+![](/uploads/danger-will-robinson-1.jpg)
