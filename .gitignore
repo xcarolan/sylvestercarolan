@@ -93,3 +93,7 @@ public/admin
 
 # Nuxt 3 build output
 .output
+
+# Claude Code local files
+.claude/settings.local.json
+.claude/worktrees/
