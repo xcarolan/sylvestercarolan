@@ -18,6 +18,7 @@ There is constant pressure to deliver, deliver, deliver. Too often, safety and s
 
 
 That risk isn't distant anymore. Over the past few weeks, we've seen a wave of outages across major U.S. firms—grounded flights, banks offline, Microsoft services down. The causes are still being sorted out, but some have reportedly been linked to rushed fixes for vulnerabilities that AI tools had discovered. Urgency, tight deadlines, cut corners: I've watched that pattern play out time and again.
+
 And what about AI itself? The rush to adopt it—and the fear of falling behind—is everywhere.
 
 

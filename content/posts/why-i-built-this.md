@@ -15,6 +15,7 @@ Honestly? I got frustrated.
 Every election cycle, I'd watch the noise machine crank up — the outrage, the spin, the deliberate confusion — and I'd find myself struggling to separate what a candidate actually stands for from what someone wanted me to feel about them.
 
 I wanted a place where I could think clearly, without all of that.
+
 So I gave myself two simple questions to work with.
 
 * Does this politician actually respect the Constitution and mean it when they take their oath of office?

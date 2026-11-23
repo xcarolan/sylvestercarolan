@@ -8,6 +8,7 @@ date: 2025-08-05T11:00:45-04:00
 featureImage: /uploads/AdobeStock_72414334.svg
 ---
 LinkedIn started as a brilliant concept: a digital space for actual networking, job hunting, and sharing genuinely useful industry insights. Fast-forward to today, and it's become a dystopian hellscape where everyone is a "thought leader" who "thrives in fast-paced environments" and has apparently never made a mistake in their entire career.
+
 The platform is now drowning in corporate speak so thick you need subtitles. We've created a business language that's basically English wearing a suit and pretending to be important. Why say "we fired people" when you can say we're "rightsizing through workforce optimization to align with market dynamics"? It's like watching someone use a thesaurus to order coffee.
 
 ## The Corporate Speak Hall of Fame:
